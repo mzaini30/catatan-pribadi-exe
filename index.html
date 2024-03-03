@@ -5,9 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
+
   <body>
     <import src="./_head.html">
+      <link rel="stylesheet" href="./lib/pico.min.css" />
+      <link rel="stylesheet" href="./lib/app.css" />
+      <script src="./lib/alasql@4.js"></script>
+      <script src="./lib/petite-vue.iife.js" defer="" init=""></script>
+
       <script src="./lib/app.js"></script>
     </import>
+    <div class="grid">
+      <aside>
+        <import src="./_sidebar.html">
+          <a href="./tulisan-baru.html">Tulisan Baru</a>
+        </import>
+      </aside>
+
+      <main>
+        <h1>Catatan Pribadi</h1>
+        <h2>Mengapa Membuat Aplikasi Ini?</h2>
+        <p>
+          Ya tentu saja karena kita sering mencatat. Jadinya, aku ingin membuat
+          aplikasi yang memudahkan dalam mencatat dengan tampilan yang simpel
+          dan mudah digunakan.
+        </p>
+        <h2>Apakah Aplikasi Ini Gratis?</h2>
+        <p>
+          Yap. Tapi, kamu bisa membantuku dengan mengirimkan Gopay ke
+          0815-4514-3654. Berapapun, aku terima kok.
+        </p>
+      </main>
+    </div>
   </body>
 </html>
