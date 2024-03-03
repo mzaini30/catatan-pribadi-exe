@@ -1,6 +1,10 @@
-<html>
-  <head></head>
-
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
   <body>
     <import src="./_head.html">
       <link rel="stylesheet" href="./lib/pico.min.css" />
@@ -40,33 +44,19 @@
           </div>
         </import>
       </aside>
-      <main
-        v-scope="{
-      judul: '',
-      isi: '',
-      tambahTulisan() {
-        alasql(/*sql*/ `insert into catatan (judul,isi) values (?,?)`, [this.judul, this.isi]);
-        this.judul = '';
-        this.isi = '';
-        location.reload();
-      }
-    }"
-      >
-        <h1>Buat Tulisan Baru</h1>
-        <form action="" @submit.prevent="tambahTulisan">
-          <label for="judul"> Judul </label>
-          <input type="text" v-model="judul" id="judul" required="" />
-          <label for="isi">Isi</label>
-          <textarea
-            name=""
-            id=""
-            cols="30"
-            v-model="isi"
-            rows="10"
-            required=""
-          ></textarea>
-          <button>Tambahkan</button>
-        </form>
+      <main @vue:mounted="mounted" v-scope="{
+        judul: '',
+        isi: '',
+        mounted(){
+let data = alasql(/*sql*/ `select judul, isi from catatan where id = ?`, [+location.search.slice(1)])
+this.judul = data[0].judul
+this.isi = data[0].isi
+        }
+      }">
+        <h1>{{ judul }}</h1>
+        <div style="
+            white-space: pre-wrap;
+        ">{{ isi }}</div>
       </main>
     </div>
   </body>

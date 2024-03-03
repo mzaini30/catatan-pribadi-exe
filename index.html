@@ -9,16 +9,40 @@
   <body>
     <import src="./_head.html">
       <link rel="stylesheet" href="./lib/pico.min.css" />
-      <link rel="stylesheet" href="./lib/app.css" />
       <script src="./lib/alasql@4.js"></script>
       <script src="./lib/petite-vue.iife.js" defer="" init=""></script>
 
+      <link rel="stylesheet" href="./lib/app.css" />
       <script src="./lib/app.js"></script>
     </import>
     <div class="grid">
       <aside>
         <import src="./_sidebar.html">
-          <a href="./tulisan-baru.html">Tulisan Baru</a>
+          <div
+            @vue:mounted="semuaTulisan"
+            v-scope="{
+      semuaTulisan(){
+        this.tulisan = alasql(/*sql*/ `select id, judul from catatan order by judul`)
+      },
+      tulisan: []
+    }"
+          >
+            <h2>Menu</h2>
+            <ol>
+              <li>
+                <a href="./index.html">Beranda</a>
+              </li>
+              <li>
+                <a href="./tulisan-baru.html">Tulisan Baru</a>
+              </li>
+            </ol>
+            <h2>Semua Tulisan</h2>
+            <ol>
+              <li v-for="t in tulisan">
+                <a :href="'baca.html?'+t.id">{{t.judul}}</a>
+              </li>
+            </ol>
+          </div>
         </import>
       </aside>
 

@@ -1,6 +1,31 @@
 <html>
   <head></head>
+
   <body>
-    <a href="./tulisan-baru.html">Tulisan Baru</a>
+    <div
+      @vue:mounted="semuaTulisan"
+      v-scope="{
+      semuaTulisan(){
+        this.tulisan = alasql(/*sql*/ `select id, judul from catatan order by judul`)
+      },
+      tulisan: []
+    }"
+    >
+      <h2>Menu</h2>
+      <ol>
+        <li>
+          <a href="./index.html">Beranda</a>
+        </li>
+        <li>
+          <a href="./tulisan-baru.html">Tulisan Baru</a>
+        </li>
+      </ol>
+      <h2>Semua Tulisan</h2>
+      <ol>
+        <li v-for="t in tulisan">
+          <a :href="'baca.html?'+t.id">{{t.judul}}</a>
+        </li>
+      </ol>
+    </div>
   </body>
 </html>
