@@ -47,24 +47,26 @@
 
 </import>
       </aside>
-      <main v-scope="{
+      <main @vue:mounted="mounted" v-scope="{
       judul: '',
       isi: '',
-      tambahTulisan() {
-        alasql(/*sql*/ `insert into catatan (judul,isi) values (?,?)`, [this.judul, this.isi]);
-        this.judul = '';
-        this.isi = '';
-        let terbaru = alasql(/*sql*/ `select id from catatan order by id desc limit 1`)[0].id
-        location.href = 'baca.html?' + terbaru
+      mounted(){
+        let dapatkan = alasql(/*sql*/ `select judul, isi from catatan where id = ?`, [+location.search.slice(1)])
+        this.judul = dapatkan[0].judul
+        this.isi = dapatkan[0].isi
+      },
+      edit() {
+        alasql(/*sql*/ `update catatan set judul = ?, isi = ? where id = ?`, [this.judul, this.isi, +location.search.slice(1)]);
+        location.href = 'baca.html?' + (+location.search.slice(1))
       }
     }">
-        <h1>Buat Tulisan Baru</h1>
-        <form action="" @submit.prevent="tambahTulisan">
+        <h1>Edit Tulisan</h1>
+        <form action="" @submit.prevent="edit">
           <label for="judul"> Judul </label>
           <input type="text" v-model="judul" id="judul" required="">
           <label for="isi">Isi</label>
           <textarea name="" id="" cols="30" v-model="isi" rows="10" required=""></textarea>
-          <button>Tambahkan</button>
+          <button>Edit</button>
         </form>
       </main>
     </div>

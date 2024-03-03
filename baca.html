@@ -1,48 +1,54 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
   </head>
   <body>
     <import src="./_head.html">
-      <link rel="stylesheet" href="./lib/pico.min.css" />
-      <script src="./lib/alasql@4.js"></script>
-      <script src="./lib/petite-vue.iife.js" defer="" init=""></script>
+    <link rel="stylesheet" href="./lib/pico.min.css">
+    <script src="./lib/alasql@4.js"></script>
+    <script src="./lib/petite-vue.iife.js" defer="" init=""></script>
 
-      <link rel="stylesheet" href="./lib/app.css" />
-      <script src="./lib/app.js"></script>
-    </import>
+    <link rel="stylesheet" href="./lib/app.css">
+    <script src="./lib/app.js"></script>
+  
+
+  
+
+</import>
     <div class="grid">
       <aside>
         <import src="./_sidebar.html">
-          <div
-            @vue:mounted="semuaTulisan"
-            v-scope="{
+
+  
+    <div @vue:mounted="semuaTulisan" v-scope="{
       semuaTulisan(){
         this.tulisan = alasql(/*sql*/ `select id, judul from catatan order by judul`)
       },
       tulisan: []
-    }"
-          >
-            <h2>Menu</h2>
-            <ol>
-              <li>
-                <a href="./index.html">Beranda</a>
-              </li>
-              <li>
-                <a href="./tulisan-baru.html">Tulisan Baru</a>
-              </li>
-            </ol>
-            <h2>Semua Tulisan</h2>
-            <ol>
-              <li v-for="t in tulisan">
-                <a :href="'baca.html?'+t.id">{{t.judul}}</a>
-              </li>
-            </ol>
-          </div>
-        </import>
+    }">
+      <h2>Menu</h2>
+      <ol>
+        <li>
+          <a href="./index.html">Beranda</a>
+        </li>
+        <li>
+          <a href="./tulisan-baru.html">Tulisan Baru</a>
+        </li>
+        <li>
+          <a href="./cari.html">Cari</a>
+        </li>
+      </ol>
+      <h2>Semua Tulisan</h2>
+      <ol>
+        <li v-for="t in tulisan">
+          <a :href="'baca.html?'+t.id">{{t.judul}}</a>
+        </li>
+      </ol>
+    </div>
+  
+
+</import>
       </aside>
       <main @vue:mounted="mounted" v-scope="{
         judul: '',
@@ -51,13 +57,23 @@
 let data = alasql(/*sql*/ `select judul, isi from catatan where id = ?`, [+location.search.slice(1)])
 this.judul = data[0].judul
 this.isi = data[0].isi
+        },
+        hapus(id){
+          let tanya = confirm('Hapus kah?')
+          if (tanya){
+            alasql(/*sql*/ `delete from catatan where id = ?`, [id])
+            location.href = 'index.html'
+          }
         }
       }">
         <h1>{{ judul }}</h1>
-        <div style="
-            white-space: pre-wrap;
-        ">{{ isi }}</div>
+        <div style="white-space: pre-wrap">{{ isi }}</div>
+        <p>
+          <a :href="'edit.html?'+(+location.search.slice(1))">Edit</a>
+          <a @click.prevent="hapus(+location.search.slice(1))" href="">Hapus</a>
+        </p>
       </main>
     </div>
-  </body>
-</html>
+  
+
+</body></html>
